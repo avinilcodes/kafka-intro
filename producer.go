@@ -19,6 +19,7 @@ func main() {
 	conf := ReadConfig(configFile)
 
 	topic := "purchases"
+	topic1 := "cart"
 	p, err := kafka.NewProducer(&conf)
 
 	if err != nil {
@@ -50,6 +51,16 @@ func main() {
 		data := items[rand.Intn(len(items))]
 		p.Produce(&kafka.Message{
 			TopicPartition: kafka.TopicPartition{Topic: &topic, Partition: kafka.PartitionAny},
+			Key:            []byte(key),
+			Value:          []byte(data),
+		}, nil)
+	}
+
+	for n := 0; n < 10; n++ {
+		key := users[rand.Intn(len(users))]
+		data := items[rand.Intn(len(items))]
+		p.Produce(&kafka.Message{
+			TopicPartition: kafka.TopicPartition{Topic: &topic1, Partition: kafka.PartitionAny},
 			Key:            []byte(key),
 			Value:          []byte(data),
 		}, nil)

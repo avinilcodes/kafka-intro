@@ -24,6 +24,7 @@ func main() {
 	conf["auto.offset.reset"] = "earliest"
 
 	c, err := kafka.NewConsumer(&conf)
+	c1, err := kafka.NewConsumer(&conf)
 
 	if err != nil {
 		fmt.Printf("Failed to create consumer: %s", err)
@@ -31,7 +32,10 @@ func main() {
 	}
 
 	topic := "purchases"
+	topic1 := "cart"
 	err = c.SubscribeTopics([]string{topic}, nil)
+	err = c1.SubscribeTopics([]string{topic1}, nil)
+
 	// Set up a channel for handling Ctrl-C, etc
 	sigchan := make(chan os.Signal, 1)
 	signal.Notify(sigchan, syscall.SIGINT, syscall.SIGTERM)
@@ -51,6 +55,13 @@ func main() {
 			}
 			fmt.Printf("Consumed event from topic %s: key = %-10s value = %s\n",
 				*ev.TopicPartition.Topic, string(ev.Key), string(ev.Value))
+			ev1, err := c1.ReadMessage(100 * time.Millisecond)
+			if err != nil {
+				// Errors are informational and automatically handled by the consumer
+				continue
+			}
+			fmt.Printf("Consumed event from topic %s: key = %-10s value = %s\n",
+				*ev1.TopicPartition.Topic, string(ev1.Key), string(ev1.Value))
 		}
 	}
 
