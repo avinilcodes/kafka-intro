@@ -25,7 +25,7 @@ func main() {
 
 	c, err := kafka.NewConsumer(&conf)
 	c1, err := kafka.NewConsumer(&conf)
-	conf["group.id"] = "kafka-go-getting-started"
+	conf["group.id"] = "kafka-go-getting-started-1"
 	conf["auto.offset.reset"] = "earliest"
 	c2, err := kafka.NewConsumer(&conf)
 
