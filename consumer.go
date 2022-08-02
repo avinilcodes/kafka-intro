@@ -25,7 +25,7 @@ func main() {
 
 	c, err := kafka.NewConsumer(&conf)
 	c1, err := kafka.NewConsumer(&conf)
-	conf["group.id"] = "kafka-go-getting-started-1"
+	conf["group.id"] = "kafka-go-getting-started"
 	conf["auto.offset.reset"] = "earliest"
 	c2, err := kafka.NewConsumer(&conf)
 
@@ -57,21 +57,21 @@ func main() {
 				// Errors are informational and automatically handled by the consumer
 				continue
 			}
-			fmt.Printf("Consumed event from topic %s: key = %-10s value = %s\n",
+			fmt.Printf("c1 - Consumed event from topic %s: key = %-10s value = %s\n",
 				*ev.TopicPartition.Topic, string(ev.Key), string(ev.Value))
 			ev1, err := c1.ReadMessage(100 * time.Millisecond)
 			if err != nil {
 				// Errors are informational and automatically handled by the consumer
 				continue
 			}
-			fmt.Printf("Consumed event from topic %s: key = %-10s value = %s\n",
+			fmt.Printf("c2 - Consumed event from topic %s: key = %-10s value = %s\n",
 				*ev1.TopicPartition.Topic, string(ev1.Key), string(ev1.Value))
 			ev2, err := c2.ReadMessage(100 * time.Millisecond)
 			if err != nil {
 				// Errors are informational and automatically handled by the consumer
 				continue
 			}
-			fmt.Printf("Consumed event from topic consumer 3 %s: key = %-10s value = %s\n",
+			fmt.Printf("c3 - Consumed event from topic %s: key = %-10s value = %s\n",
 				*ev2.TopicPartition.Topic, string(ev2.Key), string(ev2.Value))
 		}
 	}
